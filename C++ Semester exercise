@@ -1,0 +1,107 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <numeric>
+
+using namespace std;
+
+class Book {
+private:
+	string title;
+	string author;
+	string category;
+	vector<int> rates;
+	float averageRating;
+
+	void calculateAverageRating() {
+    	if (rates.empty()) {
+        	averageRating = 0;
+    	} else {
+        	float sum = accumulate(rates.begin(), rates.end(), 0.0f);
+        	averageRating = sum / rates.size();
+    	}
+	}
+
+public:
+	Book(const string& title, const string& author, const string& category)
+    	: title(title), author(author), category(category), averageRating(0) {}
+
+	void addRating(int rating) {
+    	rates.push_back(rating);
+    	calculateAverageRating();
+	}
+
+	string getCategory() const {
+    	return category;
+	}
+
+	float getAverageRating() const {
+    	return averageRating;
+	}
+
+	void print() const {
+    	cout.setf(ios::fixed);
+    	cout.setf(ios::showpoint);
+    	cout.precision(5);
+    	cout << "Title: " << title << endl;
+    	cout << "Author: " << author << endl;
+    	cout << "Category: " << category << endl;
+    	cout << "Average rate: " << averageRating << endl << endl;
+	}
+};
+
+float getCategoryAverageRating(const vector<Book>& books, const string& category) {
+	float sum = 0;
+	int count = 0;
+	for (const auto& book : books) {
+    	if (book.getCategory() == category) {
+        	sum += book.getAverageRating();
+        	count++;
+    	}
+	}
+	return count == 0 ? 0 : sum / count;
+}
+
+int main() {
+	vector<Book> books;
+
+	Book book1("C++", "Savitch", "Programming");
+	book1.addRating(4);
+	book1.addRating(3);
+	book1.addRating(4);
+	book1.addRating(5);
+	book1.addRating(5);
+	book1.addRating(2);
+	book1.addRating(5);
+	book1.addRating(3);
+	books.push_back(book1);
+
+	Book book2("C", "Chatzigiannakis", "Programming");
+	book2.addRating(4);
+	book2.addRating(3);
+	book2.addRating(5);
+	book2.addRating(2);
+	book2.addRating(4);
+	book2.addRating(5);
+	books.push_back(book2);
+
+	Book book3("Introduction in Statistics", "Vaseiliadis et al.", "Statistics");
+	book3.addRating(4);
+	book3.addRating(5);
+	book3.addRating(3);
+	book3.addRating(2);
+	books.push_back(book3);
+
+	for (const auto& book : books) {
+    	book.print();
+	}
+
+	cout << "Average rating for Programming books: " << getCategoryAverageRating(books, "Programming") << endl;
+	cout << "Average rating for Statistics books: " << getCategoryAverageRating(books, "Statistics") << endl;
+
+	return 0;
+}
+
+tics") << endl;
+    
+    return 0;
